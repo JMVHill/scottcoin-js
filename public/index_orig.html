@@ -1,0 +1,52 @@
+<html lang="en" ng-app="scApp" class="no-js">
+    <head>
+    	<meta charset="utf-8">
+  		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	    <!--Stylekbsheet-->
+	    <link rel="stylesheet" href="./app.css">
+
+	    <!-- Google Auth -->
+	    <meta name="google-signin-scope" content="profile email">
+	    <meta name="google-signin-client_id" content="963378975689-gg0r7bfen94hoep6a9ngj7nosfrsbl8e.apps.googleusercontent.com">
+	    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+	    <!-- Angular Source -->
+	    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script> -->
+	    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script> -->
+	    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-resource.min.js"></script> -->
+
+	    <!-- Angular Material -->
+	    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script> -->
+	    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script> -->
+	    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script> -->
+	    <!-- <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script> -->
+
+	    <!--Partials-->
+	    <!-- <script src="dashboard/dashboard.js"></script> -->
+
+	    <!-- JQuery -->
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+	    <!--External Stylesheets-->
+	    <!-- <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css"> -->
+	    <!-- <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css"> -->
+	    <!-- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css"> -->
+
+	    <!-- Socket IO -->
+	    <!-- <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script> -->
+
+    </head>
+    <body>
+
+    	<script src="./build/bundle.js"></script>
+
+		<md-toolbar class="md-primary">
+		    <header class="nav-header">
+		        <p style="margin-left: 5%; text-weight: bold; font-size: 150%;">Scott Coin</p>
+		    </header>
+		</md-toolbar>
+		<div ng-view></div>
+
+    </body>
+</html>

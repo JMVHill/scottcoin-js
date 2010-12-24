@@ -1,0 +1,66 @@
+<div layout="column" class="dashboard-container-master">
+	<div flex="auto" class="dashboard-container-blocks">
+		<div class="blocks-header" >
+			<div class="blocks-header-title">Home</div>   
+			<div class="blocks-header-message">Welcome to Scottchain</div>
+		</div>
+		<md-list ng-cloak class="blocks-list">
+			<md-list-item layout="row" class="blocks-item blocks-list-header">
+				<div flex="10">Height</div>
+				<div flex="30" id="blocks-list-header-hash" style="text-overflow: ellipsis">Hash</div>
+				<div flex="15">Age</div>
+				<div flex="15">Transactions</div>
+				<div flex="15">Total Sent</div>
+				<div flex="10">Size (kB)</div>
+			</md-list-item>
+			<md-list-item ng-repeat="block in blocks" class="blocks-item" ng-click="blockClick(block)">
+				<div flex="10">{{block.height}}</div>
+				<div flex="30">{{getHashDisplayText(block.hash, 16)}}</div>
+				<div flex="15">{{formatDate(elapsedTime(block.time))}}</div>
+				<div flex="15">{{block.tx.length}}</div>
+				<div flex="15">n/a</div>
+				<div flex="10">{{block.size/1024}}</div>
+			</md-list-item>
+		</md-list>
+	</div>
+	<div layout="row" xs-layout="column" class="dashboard-container-lower">
+		<div flex="40" class="dashboard-container-tx">
+			<md-list ng-cloak>
+			  	<md-list-item class="md-no-sticky tx-header-title">
+			  		<div>Latest Transactions</div>
+			  	</md-list-item>
+			  	<md-list-item ng-repeat="tx in transactions" ng-click="transactionClick(tx)">
+			    	<!-- <img ng-src="http://cdn.iwillteachyoutoberich.com/wp-content/uploads/2008/11/generic-candy.jpg" class="md-avatar" /> -->
+			    	{{getHashDisplayText(tx.txid, 40)}}
+			    	<!-- <md-icon md-svg-icon="communication:messenger" ng-click="doSecondaryAction($event)" aria-label="Open Chat" class="md-secondary md-hue-3" ng-class="{'md-primary': person.newMessage}"></md-icon> -->
+			 	 </md-list-item>
+			</md-list>
+		</div>
+		<div flex="60" layout="row" class="dashboard-cell-inspector" style="display: block">
+			<div flex="grow" class="dashboard-container-inspector">
+				<div ng-show="viewerMode('transactionInspect')" layout="column" class="inspector-selected">
+					<div flux class="inspector-title">
+						{{selectedTx.txid}}</br></br>
+					</div>
+					<div flux ng-repeat="keyValue in selectedTxKeyValue" class="inspector-key-value">
+						<span class="inspector-key">{{keyValue.key}}:</span><span class="inspector-value"> {{keyValue.value}}</span>
+					</div>
+				</div>
+				<div ng-show="viewerMode('blockInspect')" class="inspector-selected">
+					<div flux class="inspector-title">
+						{{selectedBlock.hash}}</br></br>
+					</div>
+					<div flux ng-repeat="keyValue in selectedBlockKeyValue" class="inspector-key-value">
+						<span class="inspector-key">{{keyValue.key}}:</span><span class="inspector-value"> {{keyValue.value}}</span>
+					</div>
+				</div>
+				<div ng-show="viewerMode('nothingSelected')" class="inspector-unselected">
+					No transaction or block selected for inspection.
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- <button ng-click="getPullList()">Repull tx/block-lists</button>
+<button ng-click="getPullAll()">Pull all data</button> -->
