@@ -116,5 +116,6 @@ module.exports = function(grunt) {
     grunt.registerTask("ci-test", ["check", "mochaTest:ci", "mocha_istanbul:ci", "istanbul_report",
         "istanbul_check_coverage"]);
     grunt.registerTask("serve", ["execute:serve", "watch"]);
+    grunt.registerTask("runServer", "nodemon:serverStart");
     grunt.registerTask("default", "test");
 };
