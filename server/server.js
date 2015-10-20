@@ -36,32 +36,27 @@ module.exports = function (port) {
     });
 
 
-    // NOTES ON GENERAL TERMINOLOGY
-    // 
-    // WIF      - Wallet Import/Export Format, encoding private ECDSA key to make it easier to copy
-    // ECDSA    - Elliptic Curve Digital Signature Alogrithm, elliptic curve of the digital signature algorithm
-    // 
-    // 
-    // 
-    // 
-    // 
-    // 
-    // NOTES ON LIB TERMINOLOGY
-    // 
-    // .ECPair().makeRandom    - create keyPair object at random from provided 32 character (alphanumeric) string
-    // 
-    // 
-    // 
-    // 
-    // 
-    // 
-    // 
-    // 
 
     // ----- TESTING ROUTINES -----
     var assert = require('assert');
     var bigi = require('bigi');
     var bitcoin = require('bitcoinjs-lib');
+
+    // Generate random private key
+    var generateRandomPrivateKey = function() {
+
+        // Declare working variables
+        var privateKey = "";
+        var alphabet = "0123456789ABCDEF";
+
+        // Populate private key
+        for (var index = 0; index < 64; index ++) {
+             privateKey += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+        }
+
+        // Return generated private key
+        return privateKey;
+    }
 
     // Generate random bitcoin address
     var generateRandomAddress = function() {
@@ -89,9 +84,14 @@ module.exports = function (port) {
 
     }
 
+    // Run test methods
+    var privateKey = generateRandomPrivateKey();
+    var randomAddress = generateRandomAddress();
+
     // Output test results
     console.log("--START TEST--");
-    console.log("Address generated: " + generateRandomAddress());
+    console.log("Primary key generated: " + privateKey);
+    console.log("Address generated: " + randomAddress);
     console.log("--END TEST--");
 
 };
