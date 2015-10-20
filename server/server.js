@@ -39,8 +39,8 @@ module.exports = function (port) {
 
     // ----- TESTING ROUTINES -----
     var assert = require('assert');
-    var bigi = require('bigi');
     var bitcoin = require('bitcoinjs-lib');
+    var BigInteger = require('bigi')
 
     // Generate random private key
     var generateRandomPrivateKey = function() {
@@ -50,48 +50,51 @@ module.exports = function (port) {
         var alphabet = "0123456789ABCDEF";
 
         // Populate private key
-        for (var index = 0; index < 64; index ++) {
+        for (var index = 0; index < 32; index ++) {
              privateKey += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
         }
 
         // Return generated private key
-        return privateKey;
+        var keyObject = BigInteger.fromBuffer(new Buffer(privateKey));
+        return new bitcoin.ECPair(keyObject, null, {});
     }
 
     // Generate random bitcoin address
-    var generateRandomAddress = function() {
-
-        // Function for random source string to construct address from
-        var randomSource = function() {
-            var outputString = "";
-            var alphabet = "abcdefghijklmnopqrstuvwxyz";
-            for (var index = 0; index < 32; index ++) {
-                outputString += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-            }
-            return new Buffer(outputString);
-        }
+    var generateAddress = function(privateKey) {
 
         // Create new keyPair
-        var keyPair = bitcoin.ECPair.makeRandom({ rng: randomSource });
-        var address = keyPair.getAddress();
+        var address = privateKey.getAddress();
 
         // Return new address
         return address;
     }
 
     // Generate transaction object
-    var generateTransactionObject = function() {
+    var generateTransactionObject = function(senderWIF, prevTransactionHash, prevTransactionIndex, destinationAddress, amountSatoshi) {
 
+        // Construct transaction objects
+        var keyPair = bitcoin.ECPair.fromWIF(senderWIF);
+        var transaction = new bitcoin.TransactionBuilder();
+
+        // Add inputs and outputs to object
+        transaction.addInput(prevTransactionHash, prevTransactionIndex);
+        transaction.addOutput(destinationAddress, amountSatoshi);
+        transaction.sign(0, keyPair);
+
+        // Return constructed transaction
+        return transaction.build();
     }
 
     // Run test methods
     var privateKey = generateRandomPrivateKey();
-    var randomAddress = generateRandomAddress();
+    var randomAddress = generateAddress(privateKey);
+    // var customTransaction = generateTransactionObject();
 
     // Output test results
     console.log("--START TEST--");
-    console.log("Primary key generated: " + privateKey);
+    console.log("Primary key generated: " + privateKey.toWIF());
     console.log("Address generated: " + randomAddress);
+    // console.log("Custom transaction: " + customTransaction.toHex());
     console.log("--END TEST--");
 
 };
