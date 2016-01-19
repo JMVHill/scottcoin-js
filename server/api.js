@@ -2,7 +2,6 @@ var userActions = require("./db/user-actions");
 var bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
 var express = require("express");
-var txManager = require("./transactionManager");
 //var config = require("./config");
 
 /*

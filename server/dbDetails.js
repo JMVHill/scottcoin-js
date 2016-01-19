@@ -1,8 +1,7 @@
 module.exports = {
     connectionString: "mongodb://root:momoneymoproblems@ds041494.mongolab.com:41494/scott-coin",
-    blockchain: "blocks",
+    activeAddressesCollection:"active_addresses",
+    spentAddressesCollection:"spent_addresses",
     usersCollection: "users",
-    transcationsCollection:"transactions",
-    inputsCollection:"inputs",
-    outputsCollection:"outputs"
+
 };
