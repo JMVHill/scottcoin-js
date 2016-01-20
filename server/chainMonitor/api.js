@@ -10,7 +10,7 @@ var monitorThread;
 
 // Define constants
 const SCT_SND__NEW_TX = 'newtransactions';
-const SCT_SND__UPDATE_TX = 'newtransactions';
+const SCT_SND__UPDATE_TX = 'updatetransactions';
 
 
 // Start an instance of a monitor thread

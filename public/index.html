@@ -19,8 +19,13 @@
 	    <script>
 	    	var socketio = io();
 	    	socketio.on('newtransactions', function(data) {
+	    		console.log("New transactions message");
 	    		console.log(data);
-	    	})
+	    	});
+	    	socketio.on('updatetransactions', function(data) {
+	    		console.log("Update transactions message");
+	    		console.log(data);
+	    	});
 	    </script>
     </body>
 </html>
