@@ -3,28 +3,58 @@ var dbDetails = require("../dbDetails");
 module.exports = function(db) {
     var usersCollection = db.collection(dbDetails.usersCollection);
 
-    var findUserByName = function (name) {
-        usersCollection.findOne({name: name},function(err,doc) {
-            if(doc) {
-                callback(doc);
-            } else {
-                callback(false);
-            }
+    var getAllUsers = function(callback) {
+        usersCollection.find().toArray(function(err,docs) {
+            if(!err && docs) callback(docs);
+            else callback(false);
         });
     };
 
-    var findUserById = function (id) {;
-        usersCollection.findOne({_id: id},function(err,doc) {
-            if(doc) {
-                callback(doc);
-            } else {
-                callback(false);
+    var findUserById = function (userId,callback) {
+        usersCollection.find({userId: userId},function(err,doc) {
+            if(doc)callback(doc);
+            else callback(false);
+        });
+    };
+
+    var findActiveAddressesByUser = function(userId,callback) {
+        usersCollection.find({userId : userId},{active:1, spent:0, userId:0}, function(err,doc){
+            if(doc) callback(doc);
+            else callback(false);
+        });
+    };
+
+    var findSpentAddressesByUser = function(userId, callback) {
+        usersCollection.find({userId : userId},{active:0, spent:1, userId:0}, function(err,doc){
+            if(doc) callback(doc);
+            else callback(false);
+        });
+    };
+
+    var addAddressesToUser
+
+
+    //Todo Needs a better name
+    var updateUserAddress = function(userId, address){
+        users.findOne({userId: userId}, function(err,doc){
+            if(!err && doc){
+                users.update(
+                    {userId: userId},
+                    {
+                        $pull: {active: address},
+                        $push: {spent: address}
+                    }
+                );
             }
         });
+        if(callback) callback();
     };
 
     return {
-        findUserByName: findUserByName,
-        findUserById: findUserById
+        getAllUsers: getAllUsers,
+        findUserById: findUserById,
+        updateUserAddress: updateUserAddress,
+        findActiveAddressesByUser: findActiveAddressesByUser,
+        findSpentAddressesByUser: findSpentAddressesByUser
     }
 };

@@ -1,0 +1,25 @@
+var userActionsDisconnected = require("./../db/user-actions");
+var addressActionsDisconnected = require("./../db/address-actions");
+
+module.exports = function(db){
+
+    var userActions = userActionsDisconnected(db);
+    var addressActions = addressActionsDisconnected(db);
+
+
+    // Move address from "active" to "spent" and update the relevant user
+    var updateAddresses = function(userId,address){
+        userActions.updateUserAddress(userId,address);
+        addressActions.updateAddress(userId,address);
+    };
+
+    var addAddress = function(userId,address){
+
+
+    };
+
+
+    return{
+        updateAddresses :updateAddresses
+    }
+};

@@ -1,8 +1,7 @@
-var api = require("./api");
+var api = require("./rest/api");
 var express = require("express");
 var bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
-var ScottChain = require("./scottchain");
 var http = require('http');
 
 module.exports = function (port, db, activeSessions) {
@@ -18,7 +17,6 @@ module.exports = function (port, db, activeSessions) {
     
     // Construct Directory and ScottChain api
     api(app, db, activeSessions || []);
-    ScottChain.API(app, db);
 
     // // Declare empty session object
     // var sessions = {};
@@ -41,7 +39,6 @@ module.exports = function (port, db, activeSessions) {
     app.listen(port, null);
 
     // Test for signature generation
-    ScottChain.Test.SignatureGenerationTester();
 
     // Test using provided dummy data
     // ScottChain.Test.TestChainConstruction();
