@@ -7,6 +7,7 @@ module.exports = function (port) {
     // Create app and http objects
     var app = express();
     var http = require('http').Server(app);
+    var io = require('socket.io')(http);
 
     // Declare dependencies
     app.use(express.static("public"));
@@ -39,9 +40,13 @@ module.exports = function (port) {
     var jsonRPC = require('./jsonRPC');
     jsonRPC.init();
 
+    // Setup server sockts
+    var sockets = require('./sockets');
+    sockets.init(io);
+
     // Pull in chain monitor unit
     var chainMonitor = require('./chainMonitor');
-    chainMonitor.start(jsonRPC.getRPCCaller());
+    chainMonitor.start(jsonRPC.getRPCCaller(), sockets.getEmitter());
 
     // // Generate random private key
     // var generateRandomPrivateKey = function() {

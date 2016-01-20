@@ -7,6 +7,7 @@ function ChainMonitor() {
 	this.tx = [];
 	this.txBuffer = [];
 	this.txBufferHead = 0;
+	this.updatedTx = [];
 }
 
 ChainMonitor.prototype = {
@@ -37,7 +38,7 @@ ChainMonitor.prototype = {
 		this.txBuffer = [];
 	},
 
-	syncTransactions: function(transactions) {
+	syncTransactions: function(transactions, callback) {
 
 		// If no more transactions are found abort
 		var txHeadFound = false;
@@ -56,6 +57,7 @@ ChainMonitor.prototype = {
 						if (this._txEqual(transactions[txIndex], this.tx[this.txBufferHead], true)) {
 							this.tx[this.txBufferHead] = transactions[txIndex];
 							this.txBufferHead += 1;
+							this.updatedTx.push(transactions[txIndex]);
 							// console.log("TX UPDATED; HEAD AT " + this.txBufferHead);
 						} else {
 							this.txBuffer.push(transactions[txIndex]);
@@ -70,8 +72,11 @@ ChainMonitor.prototype = {
 		// Check if buffered transactions need to be saved
 		if (this.txBuffer.length > 0 &&
 			(txHeadFound || transactions.length == 0)) {
+			var bufferedTxCopy = this.txBuffer.slice(0);
 			this._saveBufferedTx();
 			this.txBufferHead = 0;
+			if (callback) { callback(bufferedTxCopy, this.updatedTx) };
+			this.updatedTx = [];
 		}
 
 		// console.log(transactions);
@@ -83,6 +88,7 @@ ChainMonitor.prototype = {
 		// Declare working variables
 		var resultList = [];
 		var either = false;
+		var counter = 0;
 
 		// If neither is specified get both
 		if (! (locked && unlocked)) {
@@ -93,17 +99,19 @@ ChainMonitor.prototype = {
 
 		// Search through list
 		for (var index = 0; index < this.tx.length; index ++) {
-			if (either ||
+			if ( (counter >= skip) &&
+				(either ||
 				(unlocked && !this._txLocked(this.tx[index])) ||
-				(locked && this._txLocked(this.tx[index])) ) {
+				(locked && this._txLocked(this.tx[index])) ) ) {
 				result.push(this.tx[index]);
+				if (this.tx.length >= count) { break; }
 			}
+			counter += 1;
 		}
 
 		// Return calculated result
 		return resultList;
 	}
-
 }
 
 
