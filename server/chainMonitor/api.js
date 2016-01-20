@@ -28,8 +28,8 @@ function start(p_rpcCaller, p_socketEmitter) {
 
 	// Callback function on event of new transactions found
 	var newTransactionCallback = function(newTx, updatedTx) {
-		if (newTx) 				{ socketEmitter.broadcastAll(SCT_SND__NEW_TX, newTx); }
-		if (SCT_SND__UPDATE_TX) { socketEmitter.broadcastAll(SCT_SND__NEW_TX, updatedTx); }
+		if (newTx && newTx.length > 0)			{ socketEmitter.broadcastAll(SCT_SND__NEW_TX, newTx); }
+		if (updatedTx && updatedTx.length > 0)	{ socketEmitter.broadcastAll(SCT_SND__NEW_TX, updatedTx); }
 	}
 
 	// Main monitor thread --need to deal with second instance of function calling when existing has not yet finished
