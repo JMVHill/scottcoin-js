@@ -17,14 +17,15 @@ function init(p_socketIO) {
 function getEmitter(catagory) {
 	if (!catagory) {
 		return {
-			broadcastAll: function(message, data) { socketIO.broadcastAll(message, data) }
+			broadcastAll: function(message, data) { return socketIO.broadcastAll(message, data); },
+			broadcastSingle: function(socket, message, data) { return socketIO.broadcastSingle(socket, message, data); }
 		};
 	}
 }
 
 // Method to register event with sockets
-function registerEvent(eventMessage, callback) {
-	return socketIO.registerEvent(eventMessage, callback);
+function registerEvent(eventName, callback) {
+	return socketIO.registerEvent(eventName, callback);
 }
 
 

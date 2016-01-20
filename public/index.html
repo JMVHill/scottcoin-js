@@ -1,5 +1,8 @@
-<html>
+<html lang="en" ng-app="scApp" class="no-js">
     <head>
+    	<meta charset="utf-8">
+  		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
 	    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.js"></script>
 	    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-route.min.js"></script>
 	    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-resource.min.js"></script>
@@ -12,20 +15,10 @@
 	    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     </head>
     <body>
-        THIS IS A TEST.
-	    <form action="">
-	      <input id="m" autocomplete="off" /><button>Send</button>
-	    </form>
-	    <script>
-	    	var socketio = io();
-	    	socketio.on('newtransactions', function(data) {
-	    		console.log("New transactions message");
-	    		console.log(data);
-	    	});
-	    	socketio.on('updatetransactions', function(data) {
-	    		console.log("Update transactions message");
-	    		console.log(data);
-	    	});
-	    </script>
+    	<div ng-view></div>
+	    <script src="app.js"></script>
+	    <script src="view1/view1.js"></script>
+	    <script src="view2/view2.js"></script>
+	    <script src="dashboard/dashboard.js"></script>
     </body>
 </html>

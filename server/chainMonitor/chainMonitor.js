@@ -91,7 +91,7 @@ ChainMonitor.prototype = {
 		var counter = 0;
 
 		// If neither is specified get both
-		if (! (locked && unlocked)) {
+		if (!locked && !unlocked) {
 			locked = true;
 			unlocked = true;
 			either = true;
@@ -103,11 +103,13 @@ ChainMonitor.prototype = {
 				(either ||
 				(unlocked && !this._txLocked(this.tx[index])) ||
 				(locked && this._txLocked(this.tx[index])) ) ) {
-				result.push(this.tx[index]);
+				resultList.push(this.tx[index]);
 				if (this.tx.length >= count) { break; }
 			}
 			counter += 1;
 		}
+
+		console.log(resultList);
 
 		// Return calculated result
 		return resultList;

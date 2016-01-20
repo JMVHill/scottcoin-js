@@ -11,10 +11,12 @@ var monitorThread;
 // Define constants
 const SCT_SND__NEW_TX = 'newtransactions';
 const SCT_SND__UPDATE_TX = 'updatetransactions';
+const SCT_SND__TX_LIST = 'sendtransactions';
+const SCT_REC__TX_LIST = 'gettransactions';
 
 
 // Start an instance of a monitor thread
-function start(p_rpcCaller, p_socketEmitter) {
+function start(p_rpcCaller, p_socketEmitter, p_socketRegisterEvent) {
 
 	// Check monitor is not already running
 	if (monitorThread) { console.err("ERR: Attempted to create monitor thread but cannot run multiple instances.");	}
@@ -22,6 +24,7 @@ function start(p_rpcCaller, p_socketEmitter) {
 	// Save reference to rpcCaller
 	rpcCaller = p_rpcCaller;
 	socketEmitter = p_socketEmitter;
+	socketRegisterEvent = p_socketRegisterEvent;
 
 	// Create instance of chainMonitor
 	chainMonitor = new monitorModule();
@@ -46,6 +49,11 @@ function start(p_rpcCaller, p_socketEmitter) {
 		})(2);
 
 	}, 2000);
+
+	// Register events for responding to client get requests
+	socketRegisterEvent(SCT_REC__TX_LIST, function() {
+		socketEmitter.broadcastSingle(this, SCT_SND__TX_LIST, chainMonitor.getTransactions(5, 0));
+	});
 }
 
 // Halt a running instance of a monitor thread

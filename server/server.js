@@ -46,7 +46,9 @@ module.exports = function (port) {
 
     // Pull in chain monitor unit
     var chainMonitor = require('./chainMonitor');
-    chainMonitor.start(jsonRPC.getRPCCaller(), sockets.getEmitter());
+    chainMonitor.start(jsonRPC.getRPCCaller(),
+                       sockets.getEmitter(),
+                       sockets.registerEvent);
 
     // // Generate random private key
     // var generateRandomPrivateKey = function() {

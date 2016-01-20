@@ -20,8 +20,8 @@ function init() {
 // RPC API retriever
 function getRPCCaller() {
 	return {
-		getBalance: function(account, minconf, callback) { jsonRPC.getBalance(account, minconf, callback); },
-		listTransactions: function(account, count, skip, callback) { jsonRPC.listTransactions(account, count, skip, callback); }
+		getBalance: function(account, minconf, callback) { return jsonRPC.getBalance(account, minconf, callback); },
+		listTransactions: function(account, count, skip, callback) { return jsonRPC.listTransactions(account, count, skip, callback); }
 	};
 }
 
