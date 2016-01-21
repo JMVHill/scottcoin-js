@@ -11,9 +11,16 @@ angular.module('scApp.dashboard', ['ngRoute'])
 
 .controller('DashboardCtrl', ['$scope', function($scope) {
 
-	console.log($scope);
+	// Define core variables
+	$scope.transactions = [];
 
+	// Construct socket object
 	var socketio = io();
+
+	// Setup testing socket events
+	socketio.on('connect', function() {
+		socketio.emit('gettransactions');
+	});
 	socketio.on('newtransactions', function(data) {
 		console.log("New transactions message");
 		console.log(data);
@@ -25,11 +32,13 @@ angular.module('scApp.dashboard', ['ngRoute'])
 	socketio.on('sendtransactions', function(data) {
 		console.log("Received transaction list");
 		console.log(data);
+		$scope.transactions = data;
+		$scope.$apply();
 	});
-	$scope.getTransactions = function() {
-		console.log("HIT");
 
-		socketio.emit('gettransactions', "ValueA", 0.5);
+	// Get a list of transactions on function call
+	$scope.getTransactions = function() {
+		socketio.emit('gettransactions');
 		console.log("Requested transaction list");
 	};
 

@@ -104,12 +104,10 @@ ChainMonitor.prototype = {
 				(unlocked && !this._txLocked(this.tx[index])) ||
 				(locked && this._txLocked(this.tx[index])) ) ) {
 				resultList.push(this.tx[index]);
-				if (this.tx.length >= count) { break; }
+				if (resultList.length >= count) { break; }
 			}
-			counter += 1;
+			if (skip > 0) { counter += 1; }
 		}
-
-		console.log(resultList);
 
 		// Return calculated result
 		return resultList;

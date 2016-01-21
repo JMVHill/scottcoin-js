@@ -1,4 +1,7 @@
+<div class="transaction-list">
+	<ul ng-repeat="tx in transactions">
+		<li>{{tx.txid}}</li>
+	</ul>
+</div>
 
-THIS IS A TEST.
-
-<button ng-click="getTransactions()">Get transaction list</button>
+<button ng-click="getTransactions()">Repull TX-List</button>

@@ -52,7 +52,7 @@ function start(p_rpcCaller, p_socketEmitter, p_socketRegisterEvent) {
 
 	// Register events for responding to client get requests
 	socketRegisterEvent(SCT_REC__TX_LIST, function() {
-		socketEmitter.broadcastSingle(this, SCT_SND__TX_LIST, chainMonitor.getTransactions(5, 0));
+		socketEmitter.broadcastSingle(this, SCT_SND__TX_LIST, chainMonitor.getTransactions(20, 0));
 	});
 }
 
