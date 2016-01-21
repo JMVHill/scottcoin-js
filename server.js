@@ -2,5 +2,9 @@ var server = require("./server/server");
 
 var port = 8001;
 
-server(port);
+initDb(function(db) {
+    server(port, db, {}, function() {
+        console.log("Server listening");
+    });
+});
 console.log("Server running on port " + port);

@@ -1,0 +1,15 @@
+
+--- TEST DATA 01 ---
+
+private key: KwLfE5HXM6vJ117uWogg6ddFZvXsfqAMVhrMWjArBAWtbRKZystA
+public key:  02443717ae7690a5c0ac2fd2e0b4b954cb11b7ac9a0d1c480ad5adf2fa3b67cbed
+{ hash: '78cb9a30423576fc93068651766c32964e4943c9179c7ef581c65e691dc11636',
+  version: 1,
+  inputs: [],
+  outputs:
+   [ { satoshis: 5000000000,
+       script: '76a91462e907b15cbf27d5425399ebf6f0fb50ebb88f1888ac' } ],
+  nLockTime: 0 }
+
+
+
