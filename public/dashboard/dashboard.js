@@ -42,4 +42,9 @@ angular.module('scApp.dashboard', ['ngRoute'])
 		console.log("Requested transaction list");
 	};
 
+	// Testing methods
+	$scope.clickFunction = function() {
+		console.log("Test");
+	};
+
 }]);

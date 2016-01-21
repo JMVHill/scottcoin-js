@@ -1,7 +1,21 @@
-<div class="transaction-list">
+<md-button>title1</md-button>
+<md-button md-no-ink class="md-primary">Primary (md-noink)</md-button>
+<md-button ng-disabled="true" class="md-primary">Disabled</md-button>
+<md-button class="md-warn">title4</md-button>
+
+<md-list ng-cloak>
+  <md-subheader class="md-no-sticky">Avatar with Secondary Action Icon</md-subheader>
+  <md-list-item ng-repeat="tx in transactions" ng-click="clickFunction()">
+    <img ng-src="http://cdn.iwillteachyoutoberich.com/wp-content/uploads/2008/11/generic-candy.jpg" class="md-avatar" />
+    <p>{{ tx.txid }}</p>
+    <md-icon md-svg-icon="communication:messenger" ng-click="doSecondaryAction($event)" aria-label="Open Chat" class="md-secondary md-hue-3" ng-class="{'md-primary': person.newMessage}"></md-icon>
+  </md-list-item>
+</md-list>
+
+<!-- <div class="transaction-list">
 	<ul ng-repeat="tx in transactions">
 		<li>{{tx.txid}}</li>
 	</ul>
-</div>
+</div> -->
 
 <button ng-click="getTransactions()">Repull TX-List</button>
