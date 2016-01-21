@@ -20,8 +20,24 @@ function init() {
 // RPC API retriever
 function getRPCCaller() {
 	return {
-		getBalance: function(account, minconf, callback) { return jsonRPC.getBalance(account, minconf, callback); },
-		listTransactions: function(account, count, skip, callback) { return jsonRPC.listTransactions(account, count, skip, callback); }
+
+		getBalance:            function(account, minconf, callback, errCallback)
+			{ return jsonRPC.getBalance(account, minconf, callback, errCallback); },
+
+		getHash:            function(height, callback, errCallback)
+			{ return jsonRPC.getHash(height, callback, errCallback); },
+
+		getBlock:            function(hash, callback, errCallback)
+			{ return jsonRPC.getBlock(hash, callback, errCallback); },
+
+		getChainHeight:            function(callback, errCallback)
+			{ return jsonRPC.getChainHeight(callback, errCallback); },
+
+		listTransactions:            function(account, count, skip, callback, errCallback)
+			{ return jsonRPC.listTransactions(account, count, skip, callback, errCallback); },
+			
+		listBlocks:            function(sinceBlock, callback, errCallback)
+			{ return jsonRPC.listBlocks(sinceBlock, callback, errCallback); }
 	};
 }
 

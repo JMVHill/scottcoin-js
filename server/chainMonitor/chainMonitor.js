@@ -3,6 +3,12 @@
 // Chain monitor constructor
 function ChainMonitor() {
 
+	// Block fields
+	this.blocks = [];
+	this.blockBuffer = [];
+	this.blockBufferHead = 0;
+	this.blockUpdated = [];
+
 	// Transaction fields
 	this.tx = [];
 	this.txBuffer = [];
@@ -60,11 +66,23 @@ ChainMonitor.prototype = {
 	},
 
 	_saveBufferedTx: function() {
-		console.log("Added " + this.txBuffer.length + " new transactions.");
-		for (var index = this.txBuffer.length-1; index > -1; index --) {
-			this.tx.unshift(this.txBuffer[index]);
+		if (this.txBuffer.length > 0) {
+			console.log("Added " + this.txBuffer.length + " new transactions.");
+			for (var index = this.txBuffer.length-1; index > -1; index --) {
+				this.tx.unshift(this.txBuffer[index]);
+			}
+			this.txBuffer = [];
 		}
-		this.txBuffer = [];
+	},
+
+	_saveBufferedBlocks: function() {
+		if (this.blockBuffer.length > 0) {
+			console.log("Added " + this.blockBuffer.length + " new blocks.");
+			for (var index = this.blockBuffer.length-1; index > -1; index --) {
+				this.blocks.unshift(this.blockBuffer[index]);
+			}
+			this.blockBuffer = [];
+		}
 	},
 
 	syncTransactions: function(transactions, callback) {
@@ -115,6 +133,30 @@ ChainMonitor.prototype = {
 
 		// Return calculated result
 		return resultList;
+	},
+
+	syncBlocks: function(blocks, callback) {
+
+		// Create self reference
+		var self = this;
+
+		// Create list data object
+		var listData = {
+			list: 			this.blocks,
+			buffer: 		this.blockBuffer,
+			bufferHead: 	this.blockBufferHead,
+			equalCheck: 	function(b1, b2) { return (b1.hash == b2.hash); },
+			updateCheck: 	function(b1, b2) { return false; },
+			updated:  		this.blockUpdated,
+			saveBuffered: 	function() { return self._saveBufferedBlocks(); }
+		};
+
+		// Return generic list comparison result
+		return this._syncLists(listData, blocks, callback);
+	},
+
+	getBlocks: function(count, skip) {
+
 	}
 }
 
