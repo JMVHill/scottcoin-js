@@ -7,27 +7,56 @@ function ChainMonitor() {
 	this.tx = [];
 	this.txBuffer = [];
 	this.txBufferHead = 0;
-	this.updatedTx = [];
+	this.txUpdated = [];
 }
 
 ChainMonitor.prototype = {
 
-	_txEqual: function(tx1, tx2, blockExempt) {
-		return (tx1.txid == tx2.txid &&
-			    (tx1.blockhash == tx2.blockhash || blockExempt));
+	_syncLists: function(listData, newList, callback) {
+
+		// If no new list items are found abort
+		var headFound = false;
+		if (newList.length != 0) {
+
+			// Add new items's to provided buffer
+			for (var itemIndex = 0; itemIndex < newList.length; itemIndex ++) {
+
+				// Check existing new list items
+				if (listData.list.length == 0 || listData.bufferHead == listData.list.length) {
+					listData.buffer.push(newList[itemIndex]);
+				} else {
+					if (listData.equalCheck(newList[itemIndex], listData.list[listData.bufferHead])) {
+						headFound = true;
+					} else {
+						if (listData.updateCheck(newList[itemIndex], listData.list[listData.bufferHead])) {
+							listData.list[listData.bufferHead] = newList[itemIndex];
+							listData.bufferHead += 1;
+							listData.updated.push(newList[itemIndex]);
+						} else {
+							listData.buffer.push(newList[itemIndex]);
+						}
+					}
+				}
+				if (headFound) { break; }
+			}
+		}
+
+		// Check if buffered new list items need to be saved
+		if (listData.buffer.length > 0 &&
+			(headFound || newList.length == 0)) {
+			var bufferedCopy = listData.buffer.slice(0);
+			listData.saveBuffered();
+			listData.bufferHead = 0;
+			if (callback) { callback(bufferedCopy, listData.updated) };
+			listData.updated = [];
+		}
+
+		// Return false if syncing has not finished
+		return (headFound || newList.length == 0);
 	},
 
 	_txLocked: function(tx) {
 		return (tx.blockhash);
-	},
-
-	_txNotInBuffer: function(tx) {
-		for (var checkTx in this.txBuffer) {
-			if (this._txEqual(checkTx, tx)) {
-				return true;
-			}
-		}
-		return false;
 	},
 
 	_saveBufferedTx: function() {
@@ -40,47 +69,22 @@ ChainMonitor.prototype = {
 
 	syncTransactions: function(transactions, callback) {
 
-		// If no more transactions are found abort
-		var txHeadFound = false;
-		if (transactions.length != 0) {
+		// Create self reference
+		var self = this;
 
-			// Add new tx's to txBuffer
-			for (var txIndex = 0; txIndex < transactions.length; txIndex ++) {
+		// Create list data object
+		var listData = {
+			list: 			this.tx,
+			buffer: 		this.txBuffer,
+			bufferHead: 	this.txBufferHead,
+			equalCheck: 	function(tx1, tx2) { return (tx1.txid == tx2.txid && tx1.blockhash == tx2.blockhash); },
+			updateCheck: 	function(tx1, tx2) { return (tx1.txid == tx2.txid); },
+			updated:  		this.txUpdated,
+			saveBuffered: 	function() { return self._saveBufferedTx(); }
+		};
 
-				// Check existing transactions
-				if (this.tx.length == 0 || this.txBufferHead == this.tx.length) {
-					this.txBuffer.push(transactions[txIndex]);
-				} else {
-					if (this._txEqual(transactions[txIndex], this.tx[this.txBufferHead])) {
-						txHeadFound = true;
-					} else {
-						if (this._txEqual(transactions[txIndex], this.tx[this.txBufferHead], true)) {
-							this.tx[this.txBufferHead] = transactions[txIndex];
-							this.txBufferHead += 1;
-							this.updatedTx.push(transactions[txIndex]);
-							// console.log("TX UPDATED; HEAD AT " + this.txBufferHead);
-						} else {
-							this.txBuffer.push(transactions[txIndex]);
-							// console.log("Buffered 1 transaction.");
-						}
-					}
-				}
-				if (txHeadFound) { break; }
-			}
-		}
-
-		// Check if buffered transactions need to be saved
-		if (this.txBuffer.length > 0 &&
-			(txHeadFound || transactions.length == 0)) {
-			var bufferedTxCopy = this.txBuffer.slice(0);
-			this._saveBufferedTx();
-			this.txBufferHead = 0;
-			if (callback) { callback(bufferedTxCopy, this.updatedTx) };
-			this.updatedTx = [];
-		}
-
-		// console.log(transactions);
-		return (txHeadFound || transactions.length == 0);
+		// Return generic list comparison result
+		return this._syncLists(listData, transactions, callback);
 	},
 
 	getTransactions: function(count, skip, locked, unlocked) {

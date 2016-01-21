@@ -22,7 +22,6 @@ SocketAPI.prototype = {
 	},
 
 	registerEvent: function(eventName, callback) {
-		console.log("THIS IS HIT");
 		this.socketEvents.push({
 			eventName: eventName,
 			callback: callback
