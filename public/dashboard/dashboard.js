@@ -12,6 +12,7 @@ angular.module('scApp.dashboard', ['ngRoute'])
 .controller('DashboardCtrl', ['$scope', function($scope) {
 
 	// Define core variables
+	$scope.blocks = [];
 	$scope.transactions = [];
 
 	// Construct socket object
@@ -20,13 +21,18 @@ angular.module('scApp.dashboard', ['ngRoute'])
 	// Setup testing socket events
 	socketio.on('connect', function() {
 		socketio.emit('gettransactions');
+		socketio.emit('getblocks');
 	});
 	socketio.on('newtransactions', function(data) {
-		console.log("New transactions message");
+		console.log("New transactions");
+		console.log(data);
+	});
+	socketio.on('newblocks', function(data) {
+		console.log("New blocks");
 		console.log(data);
 	});
 	socketio.on('updatetransactions', function(data) {
-		console.log("Update transactions message");
+		console.log("Update transactions");
 		console.log(data);
 	});
 	socketio.on('sendtransactions', function(data) {
@@ -35,11 +41,23 @@ angular.module('scApp.dashboard', ['ngRoute'])
 		$scope.transactions = data;
 		$scope.$apply();
 	});
+	socketio.on('sendblocks', function(data) {
+		console.log("Received block list");
+		console.log(data);
+		$scope.blocks = data;
+		$scope.$apply();
+	});
 
 	// Get a list of transactions on function call
-	$scope.getTransactions = function() {
+	$scope.getPullList = function() {
 		socketio.emit('gettransactions');
-		console.log("Requested transaction list");
+		socketio.emit('getblocks');
+		console.log("Requested transaction and block list");
+	};
+	$scope.getPullAll = function() {
+		socketio.emit('alltransactions');
+		socketio.emit('allblocks');
+		console.log("Requested transaction and block list");
 	};
 
 	// Testing methods

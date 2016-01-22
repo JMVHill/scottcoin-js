@@ -4,6 +4,7 @@
 angular.module('scApp', [
   'ngRoute',
   'ngMaterial',
+  // 'angular-material-data-table',
   'scApp.dashboard'
 ]).
 config(['$routeProvider', function($routeProvider) {

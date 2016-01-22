@@ -1,8 +1,8 @@
 <md-list ng-cloak>
   <md-subheader class="md-no-sticky">Block Browser</md-subheader>
-  <md-list-item ng-repeat="tx in transactions" ng-click="clickFunction()">
-    <img ng-src="http://cdn.iwillteachyoutoberich.com/wp-content/uploads/2008/11/generic-candy.jpg" class="md-avatar" />
-    <p>{{ tx.txid }}</p>
+  <md-list-item ng-repeat="block in blocks" ng-click="clickFunction()">
+    <!-- <img ng-src="http://cdn.iwillteachyoutoberich.com/wp-content/uploads/2008/11/generic-candy.jpg" class="md-avatar" /> -->
+    <p>#{{block.height}}  {{block.hash}}</p>
     <!-- <md-icon md-svg-icon="communication:messenger" ng-click="doSecondaryAction($event)" aria-label="Open Chat" class="md-secondary md-hue-3" ng-class="{'md-primary': person.newMessage}"></md-icon> -->
   </md-list-item>
 </md-list>
@@ -22,4 +22,5 @@
 	</ul>
 </div> -->
 
-<button ng-click="getTransactions()">Repull TX-List</button>
+<button ng-click="getPullList()">Repull tx/block-lists</button>
+<button ng-click="getPullAll()">Pull all data</button>
