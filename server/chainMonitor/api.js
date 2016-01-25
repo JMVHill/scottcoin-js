@@ -125,7 +125,7 @@ function start(p_rpcCaller, p_socketEmitter, p_socketRegisterEvent) {
 
 	// Register events for 
 	socketRegisterEvent(SCT_REC__BLOCK_LIST, function() {
-		socketEmitter.broadcastSingle(this, SCT_SND__BLOCK_LIST, chainMonitor.getBlocks(8, -1));
+		socketEmitter.broadcastSingle(this, SCT_SND__BLOCK_LIST, chainMonitor.getBlocks(6, 0));
 	});
 }
 

@@ -12,11 +12,29 @@ angular.module('scApp.dashboard', ['ngRoute'])
 .controller('DashboardCtrl', ['$scope', function($scope) {
 
 	// Define core variables
-	$scope.blocks = [];
-	$scope.transactions = [];
+	$scope.blocks 			= [];
+	$scope.transactions 	= [];
+
+	// Define constant variables
+	$scope.MAX_TX 			= 8;
+	$scope.MAX_BLOCKS 		= 6;
 
 	// Construct socket object
 	var socketio = io();
+
+	function mergeNewItemsToList(list, maxSize, newList) {
+		var resultList = list;
+		for (var index = 0; index < Math.min(newList.length, maxSize); index ++) {
+			resultList.unshift(newList[index]);
+		}
+		resultList.splice(maxSize);
+		return resultList;
+	}
+
+	// Display output functions
+	$scope.getHashDisplayText = function(hash, length) {
+		return hash.substring(0, length) + "...";
+	}
 
 	// Setup testing socket events
 	socketio.on('connect', function() {
@@ -26,10 +44,14 @@ angular.module('scApp.dashboard', ['ngRoute'])
 	socketio.on('newtransactions', function(data) {
 		console.log("New transactions");
 		console.log(data);
+		$scope.transactions = mergeNewItemsToList($scope.transactions, $scope.MAX_TX, data, []);
+		$scope.$apply();
 	});
 	socketio.on('newblocks', function(data) {
 		console.log("New blocks");
 		console.log(data);
+		$scope.blocks = mergeNewItemsToList($scope.blocks, $scope.MAX_BLOCKS, data, []);
+		$scope.$apply();
 	});
 	socketio.on('updatetransactions', function(data) {
 		console.log("Update transactions");
