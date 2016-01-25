@@ -70,3 +70,39 @@
   color:                #707070;
   background-color:     #f0f0f0;
 }
+
+.tx-inspector-nothing {
+  text-align:           center;
+  margin-top:           30%;
+  color:                #606060;
+  font-weight:          bold;
+}
+
+.tx-inspector-title {
+  margin-bottom:        5px;
+}
+
+.tx-inspector-selected {
+  padding:              5px;
+}
+
+.tx-inspector-key-value {
+  margin-bottom:        5px;
+}
+
+.tx-inspector-key {
+  font-weight:          bold;
+  color:                #313131;
+}
+
+.tx-inspector-value {
+  font-style:           italic;
+  color:                #606060;
+}
+
+.tx-inspector-hash {
+  font-weight:          bold;
+  color:                #313131;
+  text-align:           center;
+  margin-top:           8px;
+}

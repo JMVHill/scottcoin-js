@@ -29,15 +29,26 @@
 			  	<md-list-item class="md-no-sticky tx-header-title">
 			  		<div>Latest Transactions</div>
 			  	</md-list-item>
-			  	<md-list-item ng-repeat="tx in transactions" ng-click="clickFunction()">
+			  	<md-list-item ng-repeat="tx in transactions" ng-click="transactionClick(tx)">
 			    	<!-- <img ng-src="http://cdn.iwillteachyoutoberich.com/wp-content/uploads/2008/11/generic-candy.jpg" class="md-avatar" /> -->
 			    	{{getHashDisplayText(tx.txid, 40)}}
 			    	<!-- <md-icon md-svg-icon="communication:messenger" ng-click="doSecondaryAction($event)" aria-label="Open Chat" class="md-secondary md-hue-3" ng-class="{'md-primary': person.newMessage}"></md-icon> -->
 			 	 </md-list-item>
 			</md-list>
 		</div>
-		<div flex="60">
-			<div class="dashboard-container-profile">
+		<div flex="60" layout="row">
+			<div flex="grow" class="dashboard-container-profile">
+				<div ng-show="selectedTx" layout="column" class="tx-inspector-title">
+					<div flux class="tx-inspector-hash">
+						{{selectedTx.txid}}</br></br>
+					</div>
+					<div flux ng-repeat="keyValue in selectedTxKeyValue" class="tx-inspector-key-value">
+						<span class="tx-inspector-key">{{keyValue.key}}:</span><span class="tx-inspector-value"> {{keyValue.value}}</span>
+					</div>
+				</div>
+				<div ng-show="!selectedTx" class="tx-inspector-nothing">
+					No transaction selected.
+				</div>
 			</div>
 		</div>
 	</div>

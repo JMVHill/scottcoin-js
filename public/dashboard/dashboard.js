@@ -12,16 +12,20 @@ angular.module('scApp.dashboard', ['ngRoute'])
 .controller('DashboardCtrl', ['$scope', function($scope) {
 
 	// Define core variables
-	$scope.blocks 			= [];
-	$scope.transactions 	= [];
+	$scope.blocks 				= [];
+	$scope.transactions 		= [];
+	$scope.selectedTx			= null;
+	$scope.selectedBlock		= null;
+	$scope.selectedTxKeyValue	= [];
 
 	// Define constant variables
-	$scope.MAX_TX 			= 8;
-	$scope.MAX_BLOCKS 		= 6;
+	$scope.MAX_TX 				= 8;
+	$scope.MAX_BLOCKS 			= 6;
 
 	// Construct socket object
 	var socketio = io();
 
+	// Utility function to merge lists
 	function mergeNewItemsToList(list, maxSize, newList) {
 		var resultList = list;
 		for (var index = 0; index < Math.min(newList.length, maxSize); index ++) {
@@ -35,6 +39,35 @@ angular.module('scApp.dashboard', ['ngRoute'])
 	$scope.getHashDisplayText = function(hash, length) {
 		return hash.substring(0, length) + "...";
 	}
+
+	// Utility function to check if a string is blacklisted
+	function blackListedString(key) {
+		var blackList = ["$$hashKey", "walletconflicts", "txid"];
+		for (var index = 0; index < blackList.length; index ++) {
+			if (blackList[index] == key) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// Set selected transaction
+	$scope.transactionClick = function(tx) {
+		$scope.selectedTx = tx;
+		$scope.selectedTxKeyValue = [];
+		for (var key in tx) {
+			if (tx.hasOwnProperty(key) &&
+				!blackListedString(key) &&
+				tx[key]) {
+				$scope.selectedTxKeyValue.push({
+					key: key.charAt(0).toUpperCase() + key.slice(1),
+					value: tx[key]
+				});
+			}
+		}
+		console.log($scope.selectedTxKeyValue);
+	}
+
 
 	// Setup testing socket events
 	socketio.on('connect', function() {
