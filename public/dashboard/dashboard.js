@@ -51,6 +51,36 @@ angular.module('scApp.dashboard', ['ngRoute'])
 		return false;
 	}
 
+	// Return elapsed time between now and value
+	$scope.elapsedTime = function(value) {
+		var nowTime = new Date().getTime();
+		var dateConvert = new Date(value * 1000);
+		dateConvert = new Date(nowTime - dateConvert);
+		return dateConvert;
+	}
+	$scope.formatDate = function(date) {
+		var hours = date.getHours();
+		var mins = date.getMinutes();
+		var seconds = date.getSeconds();
+		return (hours.toString().length == 1 ? "0" + hours : hours) + ":" + 
+		       (mins.toString().length == 1 ? "0" + mins : mins) + ":" + 
+		       (seconds.toString().length == 1 ? "0" + seconds : seconds);
+	}
+
+	// Format value depending on key
+	function createValueForKey(key, value) {
+		var dateConvert;
+		if (key == "time" ||
+			key == "timereceived" ||
+			key == "blocktime") {
+			value = new Date(value * 1000);
+		}
+		return {
+			key: key.charAt(0).toUpperCase() + key.slice(1),
+			value: value
+		};
+	}
+
 	// Set selected transaction
 	$scope.transactionClick = function(tx) {
 		$scope.selectedTx = tx;
@@ -59,10 +89,7 @@ angular.module('scApp.dashboard', ['ngRoute'])
 			if (tx.hasOwnProperty(key) &&
 				!blackListedString(key) &&
 				tx[key]) {
-				$scope.selectedTxKeyValue.push({
-					key: key.charAt(0).toUpperCase() + key.slice(1),
-					value: tx[key]
-				});
+				$scope.selectedTxKeyValue.push(createValueForKey(key, tx[key]));
 			}
 		}
 		console.log($scope.selectedTxKeyValue);
@@ -119,5 +146,7 @@ angular.module('scApp.dashboard', ['ngRoute'])
 	$scope.clickFunction = function() {
 		console.log("Test");
 	};
+
+	setInterval(function() { $scope.$apply(); }, 1000);
 
 }]);

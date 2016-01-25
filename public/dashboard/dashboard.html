@@ -16,7 +16,7 @@
 			<md-list-item ng-repeat="block in blocks" class="blocks-item" ng-click="clickFunction()">
 				<div flex="10">{{block.height}}</div>
 				<div flex="30">{{getHashDisplayText(block.hash, 16)}}</div>
-				<div flex="15">{{block.time}}</div>
+				<div flex="15">{{formatDate(elapsedTime(block.time))}}</div>
 				<div flex="15">{{block.tx.length}}</div>
 				<div flex="15">n/a</div>
 				<div flex="10">{{block.size/1024}}</div>
