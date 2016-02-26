@@ -55,7 +55,7 @@ module.exports = function (port) {
         console.log("Http server listening on port " + port);
     });
 
-    var server = app.listen(8002, function() {
-        console.log("Rest server listening on port " + 8002);
+    var server = app.listen(8102, function() {
+        console.log("Rest server listening on port " + 8102);
     });
 };
