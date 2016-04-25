@@ -18,7 +18,17 @@
     "protractor": "^2.1.0",
     "shelljs": "^0.2.6",
     "socket.io": "^1.4.4",
-    "bitcoin": "^3.0.1"
+    "bitcoin": "^3.0.1",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-jscs": "2.7.0",
+    "grunt-mocha-test": "2.0.3",
+    "grunt-mocha-istanbul": "3.0.1",
+    "grunt-execute": "0.2.2",
+    "grunt-nodemon": "0.4.1",
+    "grunt-contrib-watch": "0.6.1",
+    "express": "4.13.4",
+    "body-parser": "1.15.0",
+    "cookie-parser": "1.4.1"
   },
   "scripts": {
     "postinstall": "bower install",

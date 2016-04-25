@@ -10,7 +10,7 @@ var jsonRPC;
 function init() {
 
 	// Initialise client
-	jsonRPC = new rpcModule('127.0.0.1', 8101, 'jhill', 'password', 30000);
+	jsonRPC = new rpcModule('127.0.0.1', 8101, 'scottnet', 'password', 30000);
 
 	// Run test methods
 	jsonRPC.getBalance('*', 1, function(balance) { console.log("Server wallet balance; " + balance); });

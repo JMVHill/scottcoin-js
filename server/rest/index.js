@@ -1,2 +1,2 @@
 
-module.exports("./api");
+module.exports = require("./api");

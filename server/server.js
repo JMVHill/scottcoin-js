@@ -19,21 +19,17 @@ module.exports = function (port) {
 
     // HTTP calls
     app.use(function (req, res, next) {
-        if (req.cookies.sessionToken) {
-            req.session = sessions[req.cookies.sessionToken];
-            if (req.session) {
-                next();
-            } else {
-                res.sendStatus(401);
-            }
-        } else {
-            res.sendStatus(401);
-        }
-    });
-
-    // Notify port of starting up
-    http.listen(port, function () {
-        console.log('listening on *:' + port);
+        // if (req.cookies.sessionToken) {
+        //     req.session = sessions[req.cookies.sessionToken];
+        //     if (req.session) {
+        //         next();
+        //     } else {
+        //         res.sendStatus(401);
+        //     }
+        // } else {
+        //     res.sendStatus(401);
+        // }
+        next();
     });
 
     // Pull in json rpc unit
@@ -50,59 +46,16 @@ module.exports = function (port) {
                        sockets.getEmitter(),
                        sockets.registerEvent);
 
-    // // Generate random private key
-    // var generateRandomPrivateKey = function() {
+    // Pull in the rest API
+    var rest = require('./rest');
+    rest.init(app);
 
-    //     // Declare working variables
-    //     var privateKey = "";
-    //     var alphabet = "0123456789ABCDEF";
+    // Notify port of starting up
+    http.listen(port, function () {
+        console.log("Http server listening on port " + port);
+    });
 
-    //     // Populate private key
-    //     for (var index = 0; index < 32; index ++) {
-    //          privateKey += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-    //     }
-
-    //     // Return generated private key
-    //     var keyObject = BigInteger.fromBuffer(new Buffer(privateKey));
-    //     return new bitcoin.ECPair(keyObject, null, {});
-    // }
-
-    // // Generate random bitcoin address
-    // var generateAddress = function(privateKey) {
-
-    //     // Create new keyPair
-    //     var address = privateKey.getAddress();
-
-    //     // Return new address
-    //     return address;
-    // }
-
-    // // Generate transaction object
-    // var generateTransactionObject = function(senderWIF, prevTransactionHash, prevTransactionIndex, destinationAddress, amountSatoshi) {
-
-    //     // Construct transaction objects
-    //     var keyPair = bitcoin.ECPair.fromWIF(senderWIF);
-    //     var transaction = new bitcoin.TransactionBuilder();
-
-    //     // Add inputs and outputs to object
-    //     transaction.addInput(prevTransactionHash, prevTransactionIndex);
-    //     transaction.addOutput(destinationAddress, amountSatoshi);
-    //     transaction.sign(0, keyPair);
-
-    //     // Return constructed transaction
-    //     return transaction.build();
-    // }
-
-    // // Run test methods
-    // var privateKey = generateRandomPrivateKey();
-    // var randomAddress = generateAddress(privateKey);
-    // // var customTransaction = generateTransactionObject();
-
-    // // Output test results
-    // console.log("--START TEST--");
-    // console.log("Primary key generated: " + privateKey.toWIF());
-    // console.log("Address generated: " + randomAddress);
-    // // console.log("Custom transaction: " + customTransaction.toHex());
-    // console.log("--END TEST--");
-
+    var server = app.listen(8102, function() {
+        console.log("Rest server listening on port " + 8102);
+    });
 };
