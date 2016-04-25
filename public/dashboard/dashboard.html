@@ -13,7 +13,7 @@
 				<div flex="15">Total Sent</div>
 				<div flex="10">Size (kB)</div>
 			</md-list-item>
-			<md-list-item ng-repeat="block in blocks" class="blocks-item" ng-click="clickFunction()">
+			<md-list-item ng-repeat="block in blocks" class="blocks-item" ng-click="blockClick(block)">
 				<div flex="10">{{block.height}}</div>
 				<div flex="30">{{getHashDisplayText(block.hash, 16)}}</div>
 				<div flex="15">{{formatDate(elapsedTime(block.time))}}</div>
@@ -36,18 +36,26 @@
 			 	 </md-list-item>
 			</md-list>
 		</div>
-		<div flex="60" layout="row">
-			<div flex="grow" class="dashboard-container-profile">
-				<div ng-show="selectedTx" layout="column" class="tx-inspector-title">
-					<div flux class="tx-inspector-hash">
+		<div flex="60" layout="row" class="dashboard-cell-inspector" style="display: block">
+			<div flex="grow" class="dashboard-container-inspector">
+				<div ng-show="viewerMode('transactionInspect')" layout="column" class="inspector-selected">
+					<div flux class="inspector-title">
 						{{selectedTx.txid}}</br></br>
 					</div>
-					<div flux ng-repeat="keyValue in selectedTxKeyValue" class="tx-inspector-key-value">
-						<span class="tx-inspector-key">{{keyValue.key}}:</span><span class="tx-inspector-value"> {{keyValue.value}}</span>
+					<div flux ng-repeat="keyValue in selectedTxKeyValue" class="inspector-key-value">
+						<span class="inspector-key">{{keyValue.key}}:</span><span class="inspector-value"> {{keyValue.value}}</span>
 					</div>
 				</div>
-				<div ng-show="!selectedTx" class="tx-inspector-nothing">
-					No transaction selected.
+				<div ng-show="viewerMode('blockInspect')" class="inspector-selected">
+					<div flux class="inspector-title">
+						{{selectedBlock.hash}}</br></br>
+					</div>
+					<div flux ng-repeat="keyValue in selectedBlockKeyValue" class="inspector-key-value">
+						<span class="inspector-key">{{keyValue.key}}:</span><span class="inspector-value"> {{keyValue.value}}</span>
+					</div>
+				</div>
+				<div ng-show="viewerMode('nothingSelected')" class="inspector-unselected">
+					No transaction or block selected for inspection.
 				</div>
 			</div>
 		</div>
