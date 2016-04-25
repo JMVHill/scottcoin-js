@@ -46,10 +46,6 @@ module.exports = function (port) {
                        sockets.getEmitter(),
                        sockets.registerEvent);
 
-    // Pull in the rest API
-    var rest = require('./rest');
-    rest.init(app);
-
     // Notify port of starting up
     http.listen(port, function () {
         console.log("Http server listening on port " + port);
