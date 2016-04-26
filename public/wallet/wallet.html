@@ -1,33 +1,41 @@
-<div layout="column" class="dashboard-container-master">
-	<div flex="auto" class="dashboard-container-blocks">
-		<div class="blocks-header" >
-			<div class="blocks-header-title">Wallet</div>
-		</div>
-	</div>
-	<div layout="row" layout-padding>
-		<md-whiteframe class="md-whiteframe-2dp" flex-sm="45" flex-gt-sm="50" flex-gt-md="50" layout layout-align="center center">
-				<md-content flex>
-				<md-subheader class="md-primary">Current balance: <ng-model="balance">0.00</ng-model="balance"> SCO</md-subheader>
-				<md-content flex>
-		</md-whiteframe>
-	</div>
-	<div layout="row" layout-padding>
-	<md-whiteframe class="md-whiteframe-2dp" flex-sm="45" flex-gt-sm="50" flex-gt-md="50" layout layout-align="center center">
-			<md-content flex >
-	 		<md-subheader class="md-primary">Send Money</md-subheader>
-			<form name="sendMoney">
-				<md-input-container class="md-block" flex-gt>
-					<label>Recipient Address</label>
-					<input ng-model="recipient.address">
-				</md-input-container>
-				<md-input-container class="md-block" flex-gt-xs>
-					<label>Amount</label>
-					<input ng-model="recipient.amount">
-				</md-input-container>
-			</form>
-			</md-content>
-	</md-whiteframe>
-	</div>
+<div layout="column" layout-padding layout-wrap style="padding-bottom: 32px;" ng-cloak>
+<div layout="row">
+	<md-card flex-sm="45" flex-gt-sm="35" flex-gt-md="50">
+		<span class="md-headline">Current Balance: <span ng-bind="balance"></span> Scottcoins</span>
+		<span class="md-subhead" ng-show="unconfirmedBalance > 0">(Unconfirmed Balance:<span ng-bind="unconfirmedBalance"></span> SCO)</span>
+	</md-card>
+</div>
+<div layout="row">
+	<md-card flex-sm="45" flex-gt-sm="35" flex-gt-md="25">
+		<span class="md-title">Send Money</span>
+		<form name="sendMoney">
+			<md-input-container  class="md-block" flex-gt-sm>
+				<label>Recipient Address</label>
+				<input ng-model="recipient.address">
+			</md-input-container>
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Amount</label>
+				<input ng-model="recipient.amount">
+			</md-input-container>
+		<md-button flex class="md-raised md-primary">Send</md-button>	
+		</form>
+	</md-card>
+	<md-card flex-sm="45" flex-gt-sm="35" flex-gt-md="25">
+		<span class="md-title">Receive Money</span>	
+		</md-card-title>
+		<form name="receiveMoney">
+			<md-input-container class="md-block" flex-gt>
+				<label>Generated Address</label>
+				<input ng-model="address" readonly>
+				<span class="md-caption">  Copy the generated address to your clipboard and give it to the sender</span>
+			</md-input-container>
+			<md-button flex class="md-raised md-primary">Generate New Address</md-button>
+
+		</form>
+	</md-card>
+</div>
 
 
 </div>
+
+
