@@ -1,0 +1,33 @@
+<div layout="column" class="dashboard-container-master">
+	<div flex="auto" class="dashboard-container-blocks">
+		<div class="blocks-header" >
+			<div class="blocks-header-title">Wallet</div>
+		</div>
+	</div>
+	<div layout="row" layout-padding>
+		<md-whiteframe class="md-whiteframe-2dp" flex-sm="45" flex-gt-sm="50" flex-gt-md="50" layout layout-align="center center">
+				<md-content flex>
+				<md-subheader class="md-primary">Current balance: <ng-model="balance">0.00</ng-model="balance"> SCO</md-subheader>
+				<md-content flex>
+		</md-whiteframe>
+	</div>
+	<div layout="row" layout-padding>
+	<md-whiteframe class="md-whiteframe-2dp" flex-sm="45" flex-gt-sm="50" flex-gt-md="50" layout layout-align="center center">
+			<md-content flex >
+	 		<md-subheader class="md-primary">Send Money</md-subheader>
+			<form name="sendMoney">
+				<md-input-container class="md-block" flex-gt>
+					<label>Recipient Address</label>
+					<input ng-model="recipient.address">
+				</md-input-container>
+				<md-input-container class="md-block" flex-gt-xs>
+					<label>Amount</label>
+					<input ng-model="recipient.amount">
+				</md-input-container>
+			</form>
+			</md-content>
+	</md-whiteframe>
+	</div>
+
+
+</div>
