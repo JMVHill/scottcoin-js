@@ -7,9 +7,11 @@ let angular = require('angular');
 let sockets = require('socket.io-client');
 
 // Import angular web modules
-let initDashboard = require('./dashboard/dashboard.js');
 let initAngular = require('./app.js');
+let initDashboard = require('./dashboard/dashboard.js');
+let initWallet = require('./wallet/wallet.js');
 
 // Construct web modules
 let angularApp = initAngular(angular);
 let dashboardPartial = initDashboard(angular, sockets);
+let walletPartial = initWallet(angular, sockets);

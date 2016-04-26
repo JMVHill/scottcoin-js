@@ -1,6 +1,6 @@
 var server = require("./server/server");
 
-var port = 8001;
+var port = 8080;
 
 // initDb(function(db) {
 // 	server(port, db, {}, function() {
