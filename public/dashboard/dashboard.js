@@ -1,16 +1,13 @@
 'use strict';
 
-// let angular = require('angular');
-// let io = require('socket.io-client');
-
 module.exports = (angular, io) => {
 
     angular.module('scApp.dashboard', ['ngRoute'])
 
     .config(['$routeProvider', function($routeProvider) {
         $routeProvider.when('/dashboard', {
-            // template: require('./dashboard.html'),
-            templateUrl: '/dashboard/dashboard.html',
+            template: require('./dashboard.html'),
+            // templateUrl: '/dashboard/dashboard.html',
             controller: 'DashboardCtrl'
         });
     }])

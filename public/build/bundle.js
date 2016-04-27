@@ -55,7 +55,7 @@
 
 	// Import angular web modules
 	var initDashboard = __webpack_require__(57);
-	var initAngular = __webpack_require__(58);
+	var initAngular = __webpack_require__(59);
 
 	// Construct web modules
 	var angularApp = initAngular(angular);
@@ -38905,19 +38905,16 @@
 
 /***/ },
 /* 57 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
-	// let angular = require('angular');
-	// let io = require('socket.io-client');
 
 	module.exports = function (angular, io) {
 
 	    angular.module('scApp.dashboard', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
 	        $routeProvider.when('/dashboard', {
-	            // template: require('./dashboard.html'),
-	            templateUrl: '/dashboard/dashboard.html',
+	            template: __webpack_require__(58),
+	            // templateUrl: '/dashboard/dashboard.html',
 	            controller: 'DashboardCtrl'
 	        });
 	    }]).controller('DashboardCtrl', ['$scope', function ($scope) {
@@ -39084,27 +39081,33 @@
 
 /***/ },
 /* 58 */
+/***/ function(module, exports) {
+
+	module.exports = "<div layout=\"column\" class=\"dashboard-container-master\">\n\t<div flex=\"auto\" class=\"dashboard-container-blocks\">\n\t\t<div class=\"blocks-header\" >\n\t\t\t<div class=\"blocks-header-title\">Home</div>   \n\t\t\t<div class=\"blocks-header-message\">Welcome to Scottchain</div>\n\t\t</div>\n\t\t<md-list ng-cloak class=\"blocks-list\">\n\t\t\t<md-list-item layout=\"row\" class=\"blocks-item blocks-list-header\">\n\t\t\t\t<div flex=\"10\">Height</div>\n\t\t\t\t<div flex=\"30\" id=\"blocks-list-header-hash\" style=\"text-overflow: ellipsis\">Hash</div>\n\t\t\t\t<div flex=\"15\">Age</div>\n\t\t\t\t<div flex=\"15\">Transactions</div>\n\t\t\t\t<div flex=\"15\">Total Sent</div>\n\t\t\t\t<div flex=\"10\">Size (kB)</div>\n\t\t\t</md-list-item>\n\t\t\t<md-list-item ng-repeat=\"block in blocks\" class=\"blocks-item\" ng-click=\"blockClick(block)\">\n\t\t\t\t<div flex=\"10\">{{block.height}}</div>\n\t\t\t\t<div flex=\"30\">{{getHashDisplayText(block.hash, 16)}}</div>\n\t\t\t\t<div flex=\"15\">{{formatDate(elapsedTime(block.time))}}</div>\n\t\t\t\t<div flex=\"15\">{{block.tx.length}}</div>\n\t\t\t\t<div flex=\"15\">n/a</div>\n\t\t\t\t<div flex=\"10\">{{block.size/1024}}</div>\n\t\t\t</md-list-item>\n\t\t</md-list>\n\t</div>\n\t<div layout=\"row\" xs-layout=\"column\" class=\"dashboard-container-lower\">\n\t\t<div flex=\"40\" class=\"dashboard-container-tx\">\n\t\t\t<md-list ng-cloak>\n\t\t\t  \t<md-list-item class=\"md-no-sticky tx-header-title\">\n\t\t\t  \t\t<div>Latest Transactions</div>\n\t\t\t  \t</md-list-item>\n\t\t\t  \t<md-list-item ng-repeat=\"tx in transactions\" ng-click=\"transactionClick(tx)\">\n\t\t\t    \t<!-- <img ng-src=\"http://cdn.iwillteachyoutoberich.com/wp-content/uploads/2008/11/generic-candy.jpg\" class=\"md-avatar\" /> -->\n\t\t\t    \t{{getHashDisplayText(tx.txid, 40)}}\n\t\t\t    \t<!-- <md-icon md-svg-icon=\"communication:messenger\" ng-click=\"doSecondaryAction($event)\" aria-label=\"Open Chat\" class=\"md-secondary md-hue-3\" ng-class=\"{'md-primary': person.newMessage}\"></md-icon> -->\n\t\t\t \t </md-list-item>\n\t\t\t</md-list>\n\t\t</div>\n\t\t<div flex=\"60\" layout=\"row\" class=\"dashboard-cell-inspector\" style=\"display: block\">\n\t\t\t<div flex=\"grow\" class=\"dashboard-container-inspector\">\n\t\t\t\t<div ng-show=\"viewerMode('transactionInspect')\" layout=\"column\" class=\"inspector-selected\">\n\t\t\t\t\t<div flux class=\"inspector-title\">\n\t\t\t\t\t\t{{selectedTx.txid}}</br></br>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div flux ng-repeat=\"keyValue in selectedTxKeyValue\" class=\"inspector-key-value\">\n\t\t\t\t\t\t<span class=\"inspector-key\">{{keyValue.key}}:</span><span class=\"inspector-value\"> {{keyValue.value}}</span>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div ng-show=\"viewerMode('blockInspect')\" class=\"inspector-selected\">\n\t\t\t\t\t<div flux class=\"inspector-title\">\n\t\t\t\t\t\t{{selectedBlock.hash}}</br></br>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div flux ng-repeat=\"keyValue in selectedBlockKeyValue\" class=\"inspector-key-value\">\n\t\t\t\t\t\t<span class=\"inspector-key\">{{keyValue.key}}:</span><span class=\"inspector-value\"> {{keyValue.value}}</span>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div ng-show=\"viewerMode('nothingSelected')\" class=\"inspector-unselected\">\n\t\t\t\t\tNo transaction or block selected for inspection.\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n\n<!-- <button ng-click=\"getPullList()\">Repull tx/block-lists</button>\n<button ng-click=\"getPullAll()\">Pull all data</button> -->\n";
+
+/***/ },
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (angular) {
 
-	    angular.module('scApp', [__webpack_require__(59), __webpack_require__(61), 'scApp.dashboard']).config(['$routeProvider', function ($routeProvider) {
+	    angular.module('scApp', [__webpack_require__(60), __webpack_require__(62), 'scApp.dashboard']).config(['$routeProvider', function ($routeProvider) {
 	        $routeProvider.otherwise({ redirectTo: '/dashboard' });
 	    }]);
 	};
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(60);
+	__webpack_require__(61);
 	module.exports = 'ngRoute';
 
 
 /***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports) {
 
 	/**
@@ -40135,33 +40138,33 @@
 
 
 /***/ },
-/* 61 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Should already be required, here for clarity
 	__webpack_require__(5);
 
 	// Load Angular and dependent libs
-	__webpack_require__(62);
-	__webpack_require__(64);
+	__webpack_require__(63);
+	__webpack_require__(65);
 
 	// Now load Angular Material
-	__webpack_require__(66);
+	__webpack_require__(67);
 
 	// Export namespace
 	module.exports = 'ngMaterial';
 
 
 /***/ },
-/* 62 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(63);
+	__webpack_require__(64);
 	module.exports = 'ngAnimate';
 
 
 /***/ },
-/* 63 */
+/* 64 */
 /***/ function(module, exports) {
 
 	/**
@@ -44314,15 +44317,15 @@
 
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(65);
+	__webpack_require__(66);
 	module.exports = 'ngAria';
 
 
 /***/ },
-/* 65 */
+/* 66 */
 /***/ function(module, exports) {
 
 	/**
@@ -44733,7 +44736,7 @@
 
 
 /***/ },
-/* 66 */
+/* 67 */
 /***/ function(module, exports) {
 
 	/*!

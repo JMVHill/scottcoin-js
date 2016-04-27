@@ -2,6 +2,9 @@
 // Import modules
 var monitorModule = require('./chainMonitor')
 
+// Improt constants
+var SCOTTCOIN = require('../enums/scottcoin.js');
+
 // Define values for use between functions
 var chainMonitor;
 var rpcCaller;
@@ -12,20 +15,6 @@ var monitorThread;
 var recChainHeight = 0;
 var txSyncInProgress = false;
 var blockSyncInProgress = false;
-
-// Define blockchain constants
-const GENESIS_HASH = '000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f';
-
-// Define socket message constants
-const SCT_SND__NEW_TX 		= 'newtransactions';
-const SCT_SND__NEW_BLOCK 	= 'newblocks';
-const SCT_SND__UPDATE_TX 	= 'updatetransactions';
-const SCT_SND__TX_LIST 		= 'sendtransactions';
-const SCT_SND__BLOCK_LIST 	= 'sendblocks';
-const SCT_REC__TX_LIST 		= 'gettransactions';
-const SCT_REC__BLOCK_LIST 	= 'getblocks';
-const SCT_REC__TX_ALL 		= 'alltransactions';
-const SCT_REC__BLOCK_ALL 	= 'allblocks';
 
 
 // Start an instance of a monitor thread
@@ -44,13 +33,13 @@ function start(p_rpcCaller, p_socketEmitter, p_socketRegisterEvent) {
 
 	// Callback function on event of new transactions found
 	var newTransactionCallback = function(newTx, updatedTx) {
-		if (newTx && newTx.length > 0)					{ socketEmitter.broadcastAll(SCT_SND__NEW_TX, newTx); }
-		if (updatedTx && updatedTx.length > 0)			{ socketEmitter.broadcastAll(SCT_SND__UPDATE_TX, updatedTx); }
+		if (newTx && newTx.length > 0)					{ socketEmitter.broadcastAll(SCOTTCOIN.SCT_SND__NEW_TX, newTx); }
+		if (updatedTx && updatedTx.length > 0)			{ socketEmitter.broadcastAll(SCOTTCOIN.SCT_SND__UPDATE_TX, updatedTx); }
 	}
 
 	// Callback function on event of new blocks found
 	var newBlockCallback = function(newBlocks, updatedBlocks) {
-		if (newBlocks && newBlocks.length > 0) 			{ socketEmitter.broadcastAll(SCT_SND__NEW_BLOCK, newBlocks); }
+		if (newBlocks && newBlocks.length > 0) 			{ socketEmitter.broadcastAll(SCOTTCOIN.SCT_SND__NEW_BLOCK, newBlocks); }
 		if (updatedBlocks && updatedBlocks.length > 0) 	{ console.log("Blocks updated; WTF???"); }
 	}
 
@@ -98,34 +87,34 @@ function start(p_rpcCaller, p_socketEmitter, p_socketRegisterEvent) {
 
 	// Thread to repeatedly attempt to gather the genesis block hash (rather one higher than genesis)
 	(function getGenesisHash() {
-		if (!GENESIS_HASH) {
+		if (!SCOTTCOIN.GENESIS_HASH) {
 			rpcCaller.getHash(1, function(hash) {
-				GENESIS_HASH = hash;
+				SCOTTCOIN.GENESIS_HASH = hash;
 			});
 			setTimeout(getGenesisHash, 500);
 		} else {
-			console.log("Found genesis hash: " + GENESIS_HASH.substring(0, 12) + "...");
+			console.log("Found genesis hash: " + SCOTTCOIN.GENESIS_HASH.substring(0, 12) + "...");
 		}
 	})();
 
 	// Register events for responding to client get requests
-	socketRegisterEvent(SCT_REC__TX_ALL, function() {
-		socketEmitter.broadcastSingle(this, SCT_SND__TX_LIST, chainMonitor.txList.getList());
+	socketRegisterEvent(SCOTTCOIN.SCT_REC__TX_ALL, function() {
+		socketEmitter.broadcastSingle(this, SCOTTCOIN.SCT_SND__TX_LIST, chainMonitor.txList.getList());
 	});
 
 	// Register events for 
-	socketRegisterEvent(SCT_REC__BLOCK_ALL, function() {
-		socketEmitter.broadcastSingle(this, SCT_SND__BLOCK_LIST, chainMonitor.blockList.getList());
+	socketRegisterEvent(SCOTTCOIN.SCT_REC__BLOCK_ALL, function() {
+		socketEmitter.broadcastSingle(this, SCOTTCOIN.SCT_SND__BLOCK_LIST, chainMonitor.blockList.getList());
 	});
 
 	// Register events for responding to client get requests
-	socketRegisterEvent(SCT_REC__TX_LIST, function() {
-		socketEmitter.broadcastSingle(this, SCT_SND__TX_LIST, chainMonitor.getTransactions(8, 0));
+	socketRegisterEvent(SCOTTCOIN.SCT_REC__TX_LIST, function() {
+		socketEmitter.broadcastSingle(this, SCOTTCOIN.SCT_SND__TX_LIST, chainMonitor.getTransactions(8, 0));
 	});
 
 	// Register events for 
-	socketRegisterEvent(SCT_REC__BLOCK_LIST, function() {
-		socketEmitter.broadcastSingle(this, SCT_SND__BLOCK_LIST, chainMonitor.getBlocks(6, 0));
+	socketRegisterEvent(SCOTTCOIN.SCT_REC__BLOCK_LIST, function() {
+		socketEmitter.broadcastSingle(this, SCOTTCOIN.SCT_SND__BLOCK_LIST, chainMonitor.getBlocks(6, 0));
 	});
 }
 
