@@ -1,13 +1,14 @@
 'use strict';
 
-let angular = require('angular');
+module.exports = (angular) => {
 
-// Declare app level module which depends on views, and components
-angular.module('scApp', [
-    'ngRoute',
-    'ngMaterial',
-    'scApp.dashboard'
-]).
-config(['$routeProvider', function($routeProvider) {
-    $routeProvider.otherwise({redirectTo: '/dashboard'});
-}]);
+    angular.module('scApp', [
+        require('angular-route'),
+        require('angular-material'),
+        'scApp.dashboard'
+    ]).
+    config(['$routeProvider', function($routeProvider) {
+        $routeProvider.otherwise({redirectTo: '/dashboard'});
+    }]);
+
+};

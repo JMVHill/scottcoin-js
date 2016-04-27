@@ -1,18 +1,34 @@
 var path = require('path');
+var fs = require('fs');
 
 const PATHS = {
-    BUILD: path.join(__dirname, '/build/'),
-    PUBLIC: '/build/'
+    BUILD: path.join(__dirname, '/public/build/'),
+    PUBLIC: '/public/build/'
 };
 
+var nodeModules = {};
+fs.readdirSync('node_modules')
+    .filter(function(x) {
+        return ['.bin'].indexOf(x) === -1;
+    })
+    .forEach(function(mod) {
+       nodeModules[mod] = 'commonjs ' + mod;
+    });
+
 module.exports = {
-    entry: './public/app.js',
-    target: 'web',
+    entry: './public/entrypoint.js',
     output: {
         path: PATHS.BUILD,
         publicPath: PATHS.PUBLIC,
-        filename: '/bundle.js'
+        filename: 'bundle.js'
     },
+    resolve: {
+        extensions: ['', '.js', '.json']
+    },
+    // externals: nodeModules,
+    // externals: [
+    //     nodeExternals()
+    // ],
     module: {
         preLoaders: [
             {
@@ -23,19 +39,26 @@ module.exports = {
         ],
         loaders: [
             {
+                test: /socket\.io-client\.js/,
+                loader: 'expose?socket.io'
+            },
+            {
                 test: /\.css$/,
                 loader: 'style!css'
             }, {
+                test: /\.html$/,
+                loader: "html-loader"
+            }, {
                 test: /\.js$/,
-                exclude: /node_modules/,
+                exclude: [
+                    /node_modules/,
+                    /socket\.io-client\.js/
+                ],
                 query: {
                     presets: ['es2015']
                 },
-                loader: 'babel-loader'
+                loader: 'babel'
             }
         ]
-    },
-    resolve: {
-        extensions: ['', '.js', '.json']
     }
 };
