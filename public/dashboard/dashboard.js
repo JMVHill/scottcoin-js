@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = (angular, io) => {
+module.exports = (angular, socketio) => {
 
     angular.module('scApp.dashboard', ['ngRoute'])
 
@@ -31,13 +31,6 @@ module.exports = (angular, io) => {
                       'catagory', 'confirmations', 'generated', 'time', 'timereceived', 'vout'];
         var blockKeys = ['bits', 'chainwork', 'confirmations', 'difficulty', 'height', 'merkleroot',
                          'nonce', 'previousblockhash', 'signature', 'size', 'time', 'tx', 'version'];
-
-        // Construct socket object
-        var socketio = io();
-        // var socketio = {
-        //     on: function(temp, temp2) { },
-        //     emit: function() { }
-        // };
 
         // Utility function to merge lists
         let mergeNewItemsToList = (list, maxSize, newList) => {

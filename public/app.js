@@ -12,9 +12,9 @@ module.exports = (angular) => {
     config(['$routeProvider', function($routeProvider) {
         $routeProvider.otherwise({redirectTo: '/dashboard'});
     }]).
-    controller('tabsController',function($location) {
-        this.state =$location.path();
-        this.go=function(path){
+    controller('tabsController', function($location) {
+        this.state = $location.path();
+        this.go = function(path) {
             $location.path(path);
         };
     });
