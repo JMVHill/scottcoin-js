@@ -24,6 +24,9 @@ function getRPCCaller() {
 		getBalance:            function(account, minconf, callback, errCallback)
 			{ return jsonRPC.getBalance(account, minconf, callback, errCallback); },
 
+		getUnconfirmedBalance: 			  function(callback, errCallback)
+			{ return jsonRPC.getUnconfirmedBalance(callback, errCallback); },
+			
 		getHash:            function(height, callback, errCallback)
 			{ return jsonRPC.getHash(height, callback, errCallback); },
 
@@ -37,7 +40,13 @@ function getRPCCaller() {
 			{ return jsonRPC.listTransactions(account, count, skip, callback, errCallback); },
 			
 		listBlocks:            function(sinceBlock, callback, errCallback)
-			{ return jsonRPC.listBlocks(sinceBlock, callback, errCallback); }
+			{ return jsonRPC.listBlocks(sinceBlock, callback, errCallback); },
+
+		getNewAddress:        	  function(account, callback, errCallback)
+			{ return jsonRPC.getNewAddress(account, callback, errCallback); },
+
+		sendToAddress: 			  function(address, amount, callback, errCallback)
+			{ return jsonRPC.sendToAddress(address, amount, callback, errCallback); }
 	};
 }
 

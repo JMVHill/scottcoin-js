@@ -129,12 +129,6 @@ module.exports = (angular, socketio) => {
             $scope.selectedBlockKeyValue = createKeyValueArray(block, blockKeys);
         };
 
-
-        // Setup testing socket events
-        socketio.on('connect', () => {
-            socketio.emit('gettransactions');
-            socketio.emit('getblocks');
-        });
         socketio.on('newtransactions', (data) => {
             console.log('New transactions');
             console.log(data);
@@ -175,6 +169,8 @@ module.exports = (angular, socketio) => {
             socketio.emit('allblocks');
             console.log('Requested transaction and block list');
         };
+
+        socketio.reconnect();
 
         setInterval(() => { $scope.$apply(); }, 1000);
 

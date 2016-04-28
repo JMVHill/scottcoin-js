@@ -17,7 +17,7 @@
 				<label>Amount</label>
 				<input ng-model="recipient.amount">
 			</md-input-container>
-		<md-button flex class="md-raised md-primary">Send</md-button>	
+		<md-button flex class="md-raised md-primary" ng-click="pay(recipient)">Send</md-button>	
 		</form>
 	</md-card>
 	<md-card flex-sm="45" flex-gt-sm="35" flex-gt-md="25">
@@ -29,7 +29,7 @@
 				<input ng-model="address" readonly>
 				<span class="md-caption">  Copy the generated address to your clipboard and give it to the sender</span>
 			</md-input-container>
-			<md-button flex class="md-raised md-primary">Generate New Address</md-button>
+			<md-button flex class="md-raised md-primary" ng-click="getNewAddress()">Generate New Address</md-button>
 
 		</form>
 	</md-card>

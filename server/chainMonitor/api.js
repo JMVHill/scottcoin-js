@@ -1,9 +1,10 @@
 
 // Import modules
-var monitorModule = require('./chainMonitor')
+var monitorModule = require('./chainMonitor');
 
 // Improt constants
-var SCOTTCOIN = require('../enums/scottcoin.js');
+const SCOTTCOIN = require('../enums/scottcoin.js');
+const SOCKETS = require('../enums/sockets.js');
 
 // Define values for use between functions
 var chainMonitor;
@@ -33,13 +34,13 @@ function start(p_rpcCaller, p_socketEmitter, p_socketRegisterEvent) {
 
 	// Callback function on event of new transactions found
 	var newTransactionCallback = function(newTx, updatedTx) {
-		if (newTx && newTx.length > 0)					{ socketEmitter.broadcastAll(SCOTTCOIN.SCT_SND__NEW_TX, newTx); }
-		if (updatedTx && updatedTx.length > 0)			{ socketEmitter.broadcastAll(SCOTTCOIN.SCT_SND__UPDATE_TX, updatedTx); }
+		if (newTx && newTx.length > 0)					{ socketEmitter.broadcastAll(SOCKETS.SCT_SND__NEW_TX, newTx); }
+		if (updatedTx && updatedTx.length > 0)			{ socketEmitter.broadcastAll(SOCKETS.SCT_SND__UPDATE_TX, updatedTx); }
 	}
 
 	// Callback function on event of new blocks found
 	var newBlockCallback = function(newBlocks, updatedBlocks) {
-		if (newBlocks && newBlocks.length > 0) 			{ socketEmitter.broadcastAll(SCOTTCOIN.SCT_SND__NEW_BLOCK, newBlocks); }
+		if (newBlocks && newBlocks.length > 0) 			{ socketEmitter.broadcastAll(SOCKETS.SCT_SND__NEW_BLOCK, newBlocks); }
 		if (updatedBlocks && updatedBlocks.length > 0) 	{ console.log("Blocks updated; WTF???"); }
 	}
 
@@ -99,22 +100,22 @@ function start(p_rpcCaller, p_socketEmitter, p_socketRegisterEvent) {
 
 	// Register events for responding to client get requests
 	socketRegisterEvent(SCOTTCOIN.SCT_REC__TX_ALL, function() {
-		socketEmitter.broadcastSingle(this, SCOTTCOIN.SCT_SND__TX_LIST, chainMonitor.txList.getList());
+		socketEmitter.broadcastSingle(this, SOCKETS.SCT_SND__TX_LIST, chainMonitor.txList.getList());
 	});
 
 	// Register events for 
-	socketRegisterEvent(SCOTTCOIN.SCT_REC__BLOCK_ALL, function() {
-		socketEmitter.broadcastSingle(this, SCOTTCOIN.SCT_SND__BLOCK_LIST, chainMonitor.blockList.getList());
+	socketRegisterEvent(SOCKETS.SCT_REC__BLOCK_ALL, function() {
+		socketEmitter.broadcastSingle(this, SOCKETS.SCT_SND__BLOCK_LIST, chainMonitor.blockList.getList());
 	});
 
 	// Register events for responding to client get requests
-	socketRegisterEvent(SCOTTCOIN.SCT_REC__TX_LIST, function() {
-		socketEmitter.broadcastSingle(this, SCOTTCOIN.SCT_SND__TX_LIST, chainMonitor.getTransactions(8, 0));
+	socketRegisterEvent(SOCKETS.SCT_REC__TX_LIST, function() {
+		socketEmitter.broadcastSingle(this, SOCKETS.SCT_SND__TX_LIST, chainMonitor.getTransactions(8, 0));
 	});
 
 	// Register events for 
-	socketRegisterEvent(SCOTTCOIN.SCT_REC__BLOCK_LIST, function() {
-		socketEmitter.broadcastSingle(this, SCOTTCOIN.SCT_SND__BLOCK_LIST, chainMonitor.getBlocks(6, 0));
+	socketRegisterEvent(SOCKETS.SCT_REC__BLOCK_LIST, function() {
+		socketEmitter.broadcastSingle(this, SOCKETS.SCT_SND__BLOCK_LIST, chainMonitor.getBlocks(6, 0));
 	});
 }
 

@@ -46,6 +46,12 @@ module.exports = function (port) {
                        sockets.getEmitter(),
                        sockets.registerEvent);
 
+
+    var walletMonitor = require('./walletMonitor');
+    walletMonitor.start(jsonRPC.getRPCCaller(),
+                       sockets.getEmitter(),
+                       sockets.registerEvent);
+
     // Notify port of starting up
     http.listen(port, function () {
         console.log("Http server listening on port " + port);

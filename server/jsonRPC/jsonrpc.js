@@ -14,8 +14,6 @@ function _processErr(err, errCallback) {
 	return true;
 }
 
-
-
 function JsonRPC(host, port, user, password, timeout) {
 
 	// Create client object
@@ -32,6 +30,16 @@ JsonRPC.prototype = {
 	getBalance : function(account, minconf, callback, errCallback) {
 		if (!account) { account = '*'; }
 	    this.client.getBalance(account, minconf, function(err, balance, resHeaders) {
+	     	if (_processErr(err, errCallback)) {
+	      		if (callback) {
+	      			callback(balance);
+	      		}
+	      	}
+	    });
+	},
+
+	getUnconfirmedBalance : function(callback, errCallback) {
+	    this.client.getUnconfirmedBalance(function(err, balance, resHeaders) {
 	     	if (_processErr(err, errCallback)) {
 	      		if (callback) {
 	      			callback(balance);
@@ -94,6 +102,29 @@ JsonRPC.prototype = {
 				if (_processErr(err, errCallback)) {
 					if (callback) {
 						callback(blocks);
+					}
+				}
+			});
+		}
+	},
+
+	getNewAddress: function(callback, errCallback) {
+		this.client.getNewAddress(function(err, address, resHeaders) {
+			if (_processErr(err, errCallback)) {
+				if (callback) {
+					callback(address);
+				}
+			}
+		});
+	},
+
+	sendToAddress: function(address, amount, callback, errCallback) {
+		if (!address || !amount) {console.log('ERR: INVALID ADDRESS OR AMOUNT')}
+		else{
+			this.client.sendToAddress(address, amount, function(err, txHash, resHeaders) {
+				if (_processErr(err, errCallback)) {
+					if (callback) {
+						callback(txHash)
 					}
 				}
 			});
